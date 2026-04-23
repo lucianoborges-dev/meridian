@@ -1,0 +1,37 @@
+<Project>
+  <PropertyGroup>
+    
+    <!-- Language and SDK settings -->
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>14.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+
+    <!-- Treat warnings as errors only in Release builds -->
+    <TreatWarningsAsErrors Condition="'$(Configuration)'=='Release'">true</TreatWarningsAsErrors>
+
+    <!-- Publish trimming (safe defaults) -->
+    <PublishTrimmed>true</PublishTrimmed>
+    
+    <!-- Conservative trimming mode to avoid problemas com reflection -->
+    <TrimMode>partial</TrimMode>
+    
+    <!-- Ensures that core assemblies are not removed -->
+    <SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
+
+    <!-- Deterministic builds for reproducibility -->
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="!$(MSBuildProjectDirectory.Contains('.Tests'))">
+    <!-- Documentation disabled for now -->
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Code analysis rules -->
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" PrivateAssets="all" />
+    <!-- Opcional: StyleCop extra rules -->
+    <!-- <PackageReference Include="StyleCop.Analyzers" PrivateAssets="all" /> -->
+  </ItemGroup>
+</Project>

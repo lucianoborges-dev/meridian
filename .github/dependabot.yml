@@ -1,0 +1,30 @@
+# .github/dependabot.yml
+version: 2
+updates:
+  # NuGet dependencies (Central Package Management)
+  - package-ecosystem: "nuget"
+    directory: "/" # Root directory where Directory.Packages.props is located
+    schedule:
+      interval: "weekly"   # Check for updates once per week
+      day: "monday"        # Run on Mondays
+      time: "04:00"        # UTC time
+    open-pull-requests-limit: 5
+    assignees:
+      - "luciano"          # Replace with your GitHub username
+    reviewers:
+      - "luciano"          # Optional: assign reviewers automatically
+    labels:
+      - "dependencies"
+      - "nuget"
+
+  # GitHub Actions workflows
+  - package-ecosystem: "github-actions"
+    directory: "/" # Root directory where workflows are stored
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "04:00"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "ci"

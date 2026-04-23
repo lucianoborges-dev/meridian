@@ -1,0 +1,6 @@
+@Gateway.Ingestion_HostAddress = http://localhost:5075
+
+GET {{Gateway.Ingestion_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
