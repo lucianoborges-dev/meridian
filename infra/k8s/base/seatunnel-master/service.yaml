@@ -1,0 +1,26 @@
+# Exposes the master pod to the rest of the cluster.
+#
+# Port 5801 – Hazelcast cluster bus: workers join via this address.
+# Port 8080  – SeaTunnel REST API: submit/monitor jobs with submit-job.ps1.
+#
+# type: NodePort makes port 8080 reachable from outside the cluster
+# (nodePort 30808) without a LoadBalancer. Change to ClusterIP if you
+# only need in-cluster access, or LoadBalancer for a cloud environment.
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: seatunnel-master
+  namespace: default
+spec:
+  selector:
+    app: seatunnel-master
+  type: NodePort
+  ports:
+    - name: rest-api
+      port: 8080
+      targetPort: 8080
+      nodePort: 30808
+    - name: hazelcast
+      port: 5801
+      targetPort: 5801

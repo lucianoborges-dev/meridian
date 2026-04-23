@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seatunnel-master
+  labels:
+    app: seatunnel-master
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: seatunnel-master
+  template:
+    metadata:
+      labels:
+        app: seatunnel-master
+    spec:
+      containers:
+        - name: seatunnel
+          image: seatunnel:0.0.1  # replaced by deploy scripts
+          imagePullPolicy: IfNotPresent

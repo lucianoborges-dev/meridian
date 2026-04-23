@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seatunnel-master
+  labels:
+    app: seatunnel-master
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: seatunnel-master
+  template:
+    metadata:
+      labels:
+        app: seatunnel-master
+    spec:
+      containers:
+        - name: seatunnel
+          image: seatunnel:0.0.1  # overridden by the overlays
+          imagePullPolicy: IfNotPresent
+          command:
+            - /opt/seatunnel/bin/seatunnel-cluster.sh
+            - -r
+            - master
+          ports:
+            - name: rest-api
+              containerPort: 8080
+            - name: hazelcast
+              containerPort: 5801
+          resources:
+            limits:
+              cpu: "2"
+              memory: 4G
+            requests:
+              cpu: "500m"
+              memory: 2G
+          volumeMounts:
+            - name: hazelcast-config
+              mountPath: /opt/seatunnel/config/hazelcast-master.yaml
+              subPath: hazelcast.yaml
+            - name: hazelcast-client-config
+              mountPath: /opt/seatunnel/config/hazelcast-client.yaml
+              subPath: hazelcast-client.yaml
+            - name: seatunnel-engine-config
+              mountPath: /opt/seatunnel/config/seatunnel.yaml
+              subPath: seatunnel.yaml
+            - name: log4j-config
+              mountPath: /opt/seatunnel/config/log4j.properties
+              subPath: log4j.properties
+          env:
+            - name: HADOOP_HOME
+              value: "/opt/seatunnel"
+            - name: JvmOption
+              value: "-Dlog4j.configuration=file:/opt/seatunnel/config/log4j.properties"
+      volumes:
+        - name: hazelcast-config
+          configMap:
+            name: seatunnel-master-config
+            items:
+              - key: hazelcast.yaml
+                path: hazelcast.yaml
+        - name: hazelcast-client-config
+          configMap:
+            name: seatunnel-master-config
+            items:
+              - key: hazelcast-client.yaml
+                path: hazelcast-client.yaml
+        - name: seatunnel-engine-config
+          configMap:
+            name: seatunnel-master-config
+            items:
+              - key: seatunnel.yaml
+                path: seatunnel.yaml
+        - name: log4j-config
+          configMap:
+            name: seatunnel-log4j-config
+            items:
+              - key: log4j.properties
+                path: log4j.properties

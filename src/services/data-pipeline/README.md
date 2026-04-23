@@ -14,7 +14,7 @@ The Data Pipeline service provides:
 ## Technology Stack
 
 - **Engine**: Apache SeaTunnel 2.x
-- **JDK**: Java 11+
+- **JDK**: Java 8 (matches SeaTunnel runtime)
 - **Build**: Maven
 - **Custom Functions**: Java
 
@@ -23,11 +23,14 @@ The Data Pipeline service provides:
 ```
 data-pipeline/
 ├── java/                        # Java implementation
-│   ├── dev/                    # Development UDFs
-│   │   └── luciano/
-│   │       └── seatunnel/
-│   │           └── udf/
-│   │               └── HelloUdf.java
+│   ├── src/
+│   │   └── main/
+│   │       └── java/
+│   │           └── dev/
+│   │               └── luciano/
+│   │                   └── seatunnel/
+│   │                       └── udf/
+│   │                           └── HelloUdf.java
 │   └── pom.xml
 └── config/
     ├── dev/                    # Development configs
@@ -37,7 +40,7 @@ data-pipeline/
 
 ## Prerequisites
 
-- JDK 11 or later
+- JDK 8
 - Maven 3.6+
 - Apache SeaTunnel 2.3+ runtime
 
@@ -61,11 +64,11 @@ seatunnel-cli.sh \
 
 ## Custom UDFs
 
-Custom User Defined Functions are located in `java/dev/`
+Custom User Defined Functions are located in `java/src/main/java/dev/`
 
 ### Creating a New UDF
 
-1. Create class in `java/dev/{username}/seatunnel/udf/`
+1. Create class in `java/src/main/java/dev/{username}/seatunnel/udf/`
 2. Implement SeaTunnel UDF interface
 3. Register in pipeline configuration
 4. Build and test
@@ -96,10 +99,10 @@ mvn test
 
 ## Kubernetes Deployment
 
-K8s manifests are located in `infra/k8s/services/data-pipeline/`
+K8s manifests are located in `infra/k8s/`
 
 ```bash
-kubectl apply -k infra/k8s/overlays/dev
+kubectl apply -k infra/k8s/overlays/seatunnel-worker/sbx
 ```
 
 ## Monitoring

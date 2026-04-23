@@ -1,0 +1,37 @@
+﻿# syntax=docker/dockerfile:1
+
+# Stage 1: Build ZetaUDF JAR (JDK 8 matches the SeaTunnel runtime)
+FROM maven:3.9-eclipse-temurin-8 AS udf-build
+
+WORKDIR /udf
+COPY src/services/data-pipeline/java/pom.xml ./pom.xml
+RUN mvn -f pom.xml dependency:go-offline -q
+COPY src/services/data-pipeline/java/src ./src
+RUN mvn -f pom.xml package -DskipTests -q
+
+
+# Stage 2: SeaTunnel runtime image
+FROM seatunnelhub/openjdk:8u342
+
+ENV SEATUNNEL_VERSION="2.3.13"
+ENV SEATUNNEL_HOME="/opt/seatunnel"
+ENV MSSQL_JDBC_VERSION="13.4.0"
+ENV HADOOP_CONF_DIR="/opt/seatunnel/config"
+
+RUN wget -q https://dlcdn.apache.org/seatunnel/${SEATUNNEL_VERSION}/apache-seatunnel-${SEATUNNEL_VERSION}-bin.tar.gz \
+    && tar -xzf apache-seatunnel-${SEATUNNEL_VERSION}-bin.tar.gz \
+    && mv apache-seatunnel-${SEATUNNEL_VERSION} ${SEATUNNEL_HOME} \
+    && rm apache-seatunnel-${SEATUNNEL_VERSION}-bin.tar.gz
+
+RUN cd ${SEATUNNEL_HOME} && sh bin/install-plugin.sh ${SEATUNNEL_VERSION}
+
+RUN wget -q -P ${SEATUNNEL_HOME}/lib \
+    https://github.com/microsoft/mssql-jdbc/releases/download/v${MSSQL_JDBC_VERSION}/mssql-jdbc-${MSSQL_JDBC_VERSION}.jre8.jar \
+    && echo "-Xbootclasspath/a:${SEATUNNEL_HOME}/lib" \
+       >> ${SEATUNNEL_HOME}/config/jvm_client_options
+
+COPY --from=udf-build /udf/target/seatunnel-udf-*.jar ${SEATUNNEL_HOME}/lib/
+
+# jvm_options          – used by the server JVM (master + worker cluster nodes)
+RUN echo "-Dlog4j.configuration=file:/opt/seatunnel/config/log4j.properties" \
+    >> ${SEATUNNEL_HOME}/config/jvm_options

@@ -25,16 +25,16 @@ public class HelloUdf implements ZetaUDF {
 
     @Override
     public String functionName() {
-        return "hello";
+        return "HELLO";
     }
 
     @Override
-    public SeaTunnelDataType<?>[] resultType(List<SeaTunnelDataType<?>> argsType) {
-        return BasicType.STRING_TYPE;
-    } 
+    public SeaTunnelDataType<?> resultType(List<SeaTunnelDataType<?>> argsType) {
+        return LocalTimeType.LOCAL_DATE_TIME_TYPE;
+    }
 
     @Override
-    public String eval(List<Object> args) {
+    public Object evaluate(List<Object> args) {
 
        LOG.info("Evaluating HelloUdf with arguments: {}", args); 
 
