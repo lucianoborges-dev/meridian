@@ -1,0 +1,16 @@
+name: Hello World Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  say-hello:
+    runs-on: ubuntu-latest # Specify the operating system for the job
+    steps:
+      - name: Checkout repository # Optional: Use checkout action to access repository content
+        uses: actions/checkout@v6
+
+      - name: Print Hello World
+        run: echo "Hello World!" # The command to execute

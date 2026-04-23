@@ -1,0 +1,30 @@
+<Project>
+  <PropertyGroup>
+    <!-- Enable central package management, https://learn.microsoft.com/en-us/nuget/consume-packages/Central-Package-Management -->
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Logging (prioritize Serilog over Microsoft.Extensions.Logging.Console) -->
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.0" />
+    <!-- Removed Microsoft.Extensions.Logging.Console to avoid redundancy with Serilog -->
+    <!-- Serilog core and sinks -->
+    <PackageVersion Include="Serilog" Version="4.4.0" />
+    <PackageVersion Include="Serilog.Sinks.Console" Version="6.1.1" />
+    <PackageVersion Include="Serilog.Sinks.File" Version="7.1.0" />
+    <!-- Benchmarking -->
+    <PackageVersion Include="BenchmarkDotNet" Version="0.16.0" />
+    <!-- Testing -->
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.15.0" />
+    <PackageVersion Include="MSTest" Version="4.1.0" />
+    <!-- Optionally add xUnit or NUnit here if needed for consistency across projects -->
+    <!-- CLI (currently preview/beta packages, monitor for stable releases) -->
+    <PackageVersion Include="SharpZipLib" Version="1.4.3" />
+    <PackageVersion Include="System.CommandLine" Version="2.0.2" />
+    <!-- Code Analysis -->
+    <PackageVersion Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="10.0.0" />
+    <!-- 
+    Make it available globally, https://learn.microsoft.com/en-us/nuget/consume-packages/Central-Package-Management#make-a-package-available-globally
+    <GlobalPackageReference Include="SonarAnalyzer.CSharp" Version="10.3.0.106239" /> 
+    -->
+  </ItemGroup>
+</Project>

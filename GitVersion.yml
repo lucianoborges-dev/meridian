@@ -1,0 +1,45 @@
+# GitVersion.yml
+mode: ContinuousDeployment
+
+branches:
+  main:
+    regex: ^main$
+    tag: ''
+    increment: Patch   # Increment patch version for each commit on main
+    prevent-increment-of-merged-branch-version: true
+    is-mainline: true  # Treat main as the mainline branch
+
+  develop:
+    regex: ^(dev(elop)?|develop)$
+    tag: alpha         # Alpha builds from develop
+    increment: Patch
+
+  feature:
+    regex: ^features?[/-]
+    tag: beta          # Beta builds from feature branches
+    increment: Minor
+
+  pull-request:
+    tag: pr            # PR builds
+    increment: Patch
+
+  release:
+    tag: rc            # Release candidate builds
+    increment: Patch   # Allow patch increments during release stabilization
+
+  hotfix:
+    tag: hotfix        # Hotfix builds
+    increment: Patch
+
+  support:
+    tag: support       # Support/maintenance builds
+    increment: Patch
+
+ignore:
+  sha: []              # No commits ignored
+
+commit-message-incrementing: Enabled   # Allow commit messages to control version (e.g. +semver: minor)
+assembly-versioning-scheme: MajorMinorPatch
+assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.{CommitsSinceVersionSource}'
+assembly-informational-format: '{FullSemVer}'
+tag-prefix: 'v'        # Simplified tag prefix (e.g. v1.2.3)

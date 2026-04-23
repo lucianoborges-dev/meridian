@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>dev.luciano</groupId>
+    <artifactId>seatunnel-udf</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <name>Luciano-Dev SeaTunnel ZetaUDF</name>
+    <description>
+        UDF Sample for SeaTunnel, implementing the ZetaUDF interface to demonstrate how to create custom transformations.
+         - Uses Java 8 for maximum compatibility with SeaTunnel's runtime environment.
+    </description>
+
+    <properties>
+        <java.version>8</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Must match the SeaTunnel version installed in SEATUNNEL_HOME -->
+        <seatunnel.version>2.3.13</seatunnel.version>
+        <auto-service.version>1.0.1</auto-service.version>
+    </properties>
+
+    <dependencies>
+        <!--
+            SeaTunnel API — provides SeaTunnelDataType, BasicType, etc.
+            Scope: provided — already on the classpath inside SeaTunnel's lib/
+        -->
+        <dependency>
+            <groupId>org.apache.seatunnel</groupId>
+            <artifactId>seatunnel-api</artifactId>
+            <version>${seatunnel.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--
+            SeaTunnel transforms-v2 — provides the ZetaUDF interface.
+            Scope: provided — already on the classpath inside SeaTunnel's lib/
+        -->
+        <dependency>
+            <groupId>org.apache.seatunnel</groupId>
+            <artifactId>seatunnel-transforms-v2</artifactId>
+            <version>${seatunnel.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--
+            Google Auto-Service — generates META-INF/services/ entry for ZetaUDF
+            so SeaTunnel can discover the implementation via ServiceLoader.
+        -->
+        <dependency>
+            <groupId>com.google.auto.service</groupId>
+            <artifactId>auto-service</artifactId>
+            <version>${auto-service.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <!-- Auto-Service annotation processor -->
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>com.google.auto.service</groupId>
+                            <artifactId>auto-service</artifactId>
+                            <version>${auto-service.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!--
+        SeaTunnel artifacts are published to Apache's repository.
+        Add this if mvn cannot resolve seatunnel-api / seatunnel-transforms-v2.
+    -->
+    <repositories>
+        <repository>
+            <id>apache-releases</id>
+            <url>https://repository.apache.org/content/repositories/releases/</url>
+            <releases><enabled>true</enabled></releases>
+            <snapshots><enabled>false</enabled></snapshots>
+        </repository>
+    </repositories>
+</project>
