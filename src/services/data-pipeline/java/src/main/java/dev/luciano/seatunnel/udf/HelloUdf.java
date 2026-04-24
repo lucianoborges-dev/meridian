@@ -30,7 +30,7 @@ public class HelloUdf implements ZetaUDF {
 
     @Override
     public SeaTunnelDataType<?> resultType(List<SeaTunnelDataType<?>> argsType) {
-        return LocalTimeType.LOCAL_DATE_TIME_TYPE;
+        return BasicType.STRING_TYPE;
     }
 
     @Override

@@ -9,11 +9,11 @@ patches:
 
 configMapGenerator:
   - name: seatunnel-worker-config
-    behavior: replace
+    behavior: create
     files:
       - hazelcast.yaml
       - seatunnel.yaml
   - name: seatunnel-log4j-config
-    behavior: replace
+    behavior: create
     files:
       - log4j.properties      
