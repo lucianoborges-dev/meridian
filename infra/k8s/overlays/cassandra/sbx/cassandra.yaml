@@ -1,0 +1,30 @@
+# The name of the cluster; must be identical for all nodes in the same cluster
+cluster_name: 'Test Cluster'
+
+# Number of tokens randomly assigned to this node; 256 is common for newer versions
+num_tokens: 256
+
+# Configuration for seed nodes used for bootstrapping
+seed_provider:
+    - class_name: org.apache.cassandra.locator.SimpleSeedProvider
+      parameters:
+          - seeds: "127.0.0.1"
+
+# The address to bind to for internode communication (never use 0.0.0.0)
+listen_address: localhost
+
+# The address to bind to for client (CQL) communication
+rpc_address: localhost
+
+# Directories where Cassandra stores data (can be multiple)
+data_file_directories:
+    - /var/lib/cassandra/data
+
+# Directory for commit logs
+commitlog_directory: /var/lib/cassandra/commitlog
+
+# Directory for saved caches
+saved_caches_directory: /var/lib/cassandra/saved_caches
+
+# Default snitch for single-datacenter setups
+endpoint_snitch: SimpleSnitch
