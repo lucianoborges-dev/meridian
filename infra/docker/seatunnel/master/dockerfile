@@ -1,0 +1,14 @@
+﻿# Stage 1: SeaTunnel runtime image
+FROM seatunnelhub/openjdk:8u342
+
+ENV SEATUNNEL_VERSION="2.3.13"
+ENV SEATUNNEL_HOME="/opt/seatunnel"
+
+RUN wget -q https://dlcdn.apache.org/seatunnel/${SEATUNNEL_VERSION}/apache-seatunnel-${SEATUNNEL_VERSION}-bin.tar.gz \
+    && tar -xzf apache-seatunnel-${SEATUNNEL_VERSION}-bin.tar.gz \
+    && mv apache-seatunnel-${SEATUNNEL_VERSION} ${SEATUNNEL_HOME} \
+    && rm apache-seatunnel-${SEATUNNEL_VERSION}-bin.tar.gz
+
+# jvm_options – used by the server JVM (master + worker cluster nodes)
+RUN echo "-Dlog4j.configuration=file:/opt/seatunnel/config/log4j.properties" \
+    >> ${SEATUNNEL_HOME}/config/jvm_options
