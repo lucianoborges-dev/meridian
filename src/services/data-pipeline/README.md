@@ -102,7 +102,7 @@ mvn test
 K8s manifests are located in `infra/k8s/`
 
 ```bash
-kubectl apply -k infra/k8s/overlays/seatunnel-worker/sbx
+kubectl apply -k infra/k8s/overlays/seatunnel-worker
 ```
 
 ## Monitoring

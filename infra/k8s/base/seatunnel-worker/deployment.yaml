@@ -15,8 +15,8 @@ spec:
         app: seatunnel-worker
     spec:
       containers:
-        - name: seatunnel
-          image: seatunnel:0.0.1 # overridden by the overlays
+        - name: seatunnel-worker
+          image: seatunnel-worker:0.0.1 # overridden by the overlays
           imagePullPolicy: IfNotPresent
           command:
             - /opt/seatunnel/bin/seatunnel-cluster.sh

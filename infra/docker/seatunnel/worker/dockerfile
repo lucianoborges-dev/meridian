@@ -23,6 +23,10 @@ RUN wget -q https://dlcdn.apache.org/seatunnel/${SEATUNNEL_VERSION}/apache-seatu
     && mv apache-seatunnel-${SEATUNNEL_VERSION} ${SEATUNNEL_HOME} \
     && rm apache-seatunnel-${SEATUNNEL_VERSION}-bin.tar.gz
 
+# Installing only required  connector reduces the image size   
+RUN printf '%s\n' '--connectors-v2--' 'connector-jdbc' 'connector-file-local' \
+    > ${SEATUNNEL_HOME}/config/plugin_config
+
 RUN cd ${SEATUNNEL_HOME} && sh bin/install-plugin.sh ${SEATUNNEL_VERSION}
 
 RUN wget -q -P ${SEATUNNEL_HOME}/lib \
