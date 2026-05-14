@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: cassandra
+spec:
+  serviceName: cassandra
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cassandra
+  template:
+    metadata:
+      labels:
+        app: cassandra
+    spec:
+      containers:
+      - name: cassandra
+        image: cassandra:4.1
+        ports:
+        - containerPort: 9042
+          name: cql
+        env:
+        - name: MAX_HEAP_SIZE
+          value: "1G"
+        - name: HEAP_NEWSIZE
+          value: "200M"
+        resources:
+          requests:
+            memory: "1.5Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        readinessProbe:
+          exec:
+            command: ["/bin/bash", "-c", "nodetool status"]
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          
