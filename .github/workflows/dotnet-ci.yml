@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest # Specify the operating system for the job
     steps:
       - name: Checkout repository # Optional: Use checkout action to access repository content
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Print Hello World
         run: echo "Hello World!" # The command to execute
